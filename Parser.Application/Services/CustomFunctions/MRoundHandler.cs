@@ -1,7 +1,7 @@
 ﻿using NCalc.Handlers;
-using Parser.Domain.Interfaces;
+using Parser.Application.Interfaces;
 
-namespace Parser.Domain.Services.CustomFunctions;
+namespace Parser.Application.Services.CustomFunctions;
 
 public class MRoundHandler : ICustomFunctionHandler
 {

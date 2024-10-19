@@ -1,18 +1,20 @@
 ﻿using System.Text.RegularExpressions;
 using NCalc;
+using Parser.Application.Interfaces;
 using Parser.Domain.Dto;
 using Parser.Domain.Entities;
-using Parser.Domain.Interfaces;
 
-namespace  Parser.Domain.Services;
+namespace  Parser.Application.Services;
 
 public class FormulaService : IFormulaService
 {
     private readonly IEnumerable<ICustomFunctionHandler> _functionHandlers;
+    private readonly IVariableLoaderFactory _variableLoaderFactory;
 
-    public FormulaService(IEnumerable<ICustomFunctionHandler> functionHandlers)
+    public FormulaService(IEnumerable<ICustomFunctionHandler> functionHandlers, IVariableLoaderFactory variableLoaderFactory)
     {
         _functionHandlers = functionHandlers;
+        _variableLoaderFactory = variableLoaderFactory;
     }
 
     public string? Evaluate(FormulaContext context)
@@ -69,28 +71,32 @@ public class FormulaService : IFormulaService
         }
     }
 
-    private (string FormulaOrValue, bool IsFormula) LoadVariableDefinition(DataSheet dataSheet, string variableName, IDictionary<string, (string FormulaOrValue, bool IsFormula)> variableDefinitions, ISet<string> visitedVariables)
+    private (string FormulaOrValue, bool IsFormula) LoadVariableDefinition(DataSheet dataSheet, string variableName,
+                                                                           IDictionary<string, (string FormulaOrValue, bool IsFormula)> variableDefinitions,
+                                                                           ISet<string> visitedVariables)
     {
         if (!visitedVariables.Add(variableName))
             throw new InvalidOperationException($"Цикличная зависимость обнаружена для переменной '{variableName}'");
-        
+
         var variableData = dataSheet.Values.FirstOrDefault(v => v.TemplateAttribute.Name == variableName);
+        var type = variableData?.TemplateAttribute.Type ?? TemplateAttributeType.Unknown;
 
-        if (variableData is null)
-            return ("0", false);
+        var strategy = _variableLoaderFactory.GetStrategy(type);
+
+        var result = strategy.Load(dataSheet, variableName);
+
+        if (!result.IsFormula)
+            return result;
         
-        if (variableData.TemplateAttribute.Type is not TemplateAttributeType.Formula)
-            return (variableData.GetValue(), false);
-
-        var nestedVariables = ExtractVariables(variableData.TemplateAttribute.Formula);
-            
-        foreach (var nestedVariable in nestedVariables.Where(nestedVariable => !variableDefinitions.ContainsKey(nestedVariable)))
+        var nestedVariables = ExtractVariables(result.FormulaOrValue);
+        
+        foreach (var nestedVariable in nestedVariables.Where(nv => !variableDefinitions.ContainsKey(nv)))
         {
             var nestedVariableData = LoadVariableDefinition(dataSheet, nestedVariable, variableDefinitions, visitedVariables);
             variableDefinitions[nestedVariable] = nestedVariableData;
         }
 
-        return (variableData.TemplateAttribute.Formula, true);
+        return result;
     }
 
     private HashSet<string> ExtractVariables(string formula)

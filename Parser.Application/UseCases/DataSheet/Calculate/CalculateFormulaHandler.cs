@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Parser.Application.Common;
 using Parser.Application.Common.Results;
+using Parser.Application.Interfaces;
 using Parser.Domain.Dto;
 using Parser.Domain.Interfaces;
 

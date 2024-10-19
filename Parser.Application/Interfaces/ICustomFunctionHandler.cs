@@ -1,6 +1,6 @@
 ﻿using NCalc.Handlers;
 
-namespace Parser.Domain.Interfaces;
+namespace Parser.Application.Interfaces;
 
 public interface ICustomFunctionHandler
 {

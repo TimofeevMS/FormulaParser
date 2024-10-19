@@ -2,8 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Parser.Domain.Interfaces;
-using Parser.Domain.Services;
-using Parser.Domain.Services.CustomFunctions;
 using Parser.Infrastructure.Contexts;
 using Parser.Infrastructure.Repositories;
 
@@ -17,10 +15,6 @@ public static class DependencyInjection
         
         services.AddScoped<ITemplateRepository, TemplateRepository>();
         services.AddScoped<IDataSheetRepository, DataSheetRepository>();
-        
-        services.AddScoped<IFormulaService, FormulaService>();
-        services.AddScoped<ICustomFunctionHandler, MRoundHandler>();
-        services.AddScoped<ICustomFunctionHandler, AndHandler>();
         
         return services;
     }

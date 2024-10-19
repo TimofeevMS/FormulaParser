@@ -1,6 +1,6 @@
 ﻿using Parser.Domain.Dto;
 
-namespace Parser.Domain.Interfaces;
+namespace Parser.Application.Interfaces;
 
 public interface IFormulaService
 {

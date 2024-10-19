@@ -1,9 +1,11 @@
 ﻿namespace Parser.Domain.Entities;
 
+[Flags]
 public enum TemplateAttributeType
 {
-    String = 1,
+    Unknown,
+    String,
     Number,
     Boolean,
-    Formula
+    Formula,
 }
