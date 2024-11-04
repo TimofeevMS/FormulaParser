@@ -1,16 +1,18 @@
 using Parser.Application;
 using Parser.Infrastructure;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
+       .AddSerilog()
        .AddCors(options =>
                 {
-                    options.AddPolicy("AllowAll", builder =>
+                    options.AddPolicy("AllowAll", policyBuilder =>
                                                   {
-                                                      builder.AllowAnyOrigin()
-                                                             .AllowAnyMethod()
-                                                             .AllowAnyHeader();
+                                                      policyBuilder.AllowAnyOrigin()
+                                                                   .AllowAnyMethod()
+                                                                   .AllowAnyHeader();
                                                   });
                 })
        .AddEndpointsApiExplorer()
@@ -18,6 +20,10 @@ builder.Services
        .AddInfrastructure(builder.Configuration)
        .AddApplication()
        .AddControllers();
+
+Log.Logger = new LoggerConfiguration()
+             .WriteTo.Console()
+             .CreateLogger();
 
 var app = builder.Build();
 

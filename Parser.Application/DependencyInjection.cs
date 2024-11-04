@@ -1,9 +1,11 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Parser.Application.Common.Behaviors;
 using Parser.Application.Interfaces;
 using Parser.Application.Services;
-using Parser.Application.Services.CustomFunctions;
-using Parser.Application.Services.VariableStrategy;
+using Parser.Application.Services.Formula;
+using Parser.Application.Services.Formula.CustomFunctions;
+using Parser.Application.Services.Formula.VariableStrategy;
 
 namespace Parser.Application;
 
@@ -21,6 +23,8 @@ public static class DependencyInjection
         services.AddScoped<IVariableLoaderFactory, VariableLoaderFactory>();
         services.AddScoped<IVariableLoaderStrategy, ValueLoaderStrategy>();
         services.AddScoped<IVariableLoaderStrategy, FormulaLoaderStrategy>();
+        
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
         
         return services;
     }

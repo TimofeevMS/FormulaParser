@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Parser.Application.Common.Results;
-using Parser.Application.UseCases.DataSheet.Calculate;
-using Parser.Application.UseCases.DataSheet.Create;
-using Parser.Application.UseCases.DataSheet.Edit;
-using Parser.Application.UseCases.DataSheet.Get;
-using Parser.Application.UseCases.DataSheet.GetForMenu;
+using Parser.Application.UseCases.DataSheets.Calculate;
+using Parser.Application.UseCases.DataSheets.Create;
+using Parser.Application.UseCases.DataSheets.Edit;
+using Parser.Application.UseCases.DataSheets.Get;
+using Parser.Application.UseCases.DataSheets.GetForMenu;
+using Parser.Application.UseCases.DataSheets.GetTemplates;
 using Parser.Controllers.Common;
 
 namespace Parser.Controllers;
@@ -35,6 +36,10 @@ public class DataSheetController : ApiController
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IResult> Edit(EditDataSheetRequest request, CancellationToken cancellationToken) => ToResponse(await Sender.Send(request, cancellationToken));
     
+    [HttpGet("templates/{Id:guid}")]
+    [ProducesResponseType(typeof(Result<List<GetTemplatesResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public async Task<IResult> GetTemplates([FromRoute] GetTemplatesRequest request, CancellationToken cancellationToken) => ToResponse(await Sender.Send(request, cancellationToken));
     
     [HttpPost("calculate")]
     [ProducesResponseType(typeof(Result<string>), StatusCodes.Status200OK)]

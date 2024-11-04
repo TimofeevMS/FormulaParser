@@ -15,7 +15,7 @@ public abstract class ApiController : ControllerBase
         if (result.Succeeded)
             return TypedResults.Ok(result);
 
-        if (result.Errors.Length != 1)
+        if (result.Errors.Length > 1)
             return TypedResults.BadRequest(result);
         
         var error = result.Errors.First();

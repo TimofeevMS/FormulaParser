@@ -11,5 +11,7 @@ public class TemplateAttributeConfiguration : IEntityTypeConfiguration<TemplateA
         builder.HasOne(a => a.Template)
                .WithMany(t => t.Attributes)
                .HasForeignKey(a => a.DataSheetTemplateId);
+        
+        builder.HasQueryFilter(e => !e.DeletedAt.HasValue);
     }
 }

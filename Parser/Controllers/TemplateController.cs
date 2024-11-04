@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Parser.Application.Common.Results;
-using Parser.Application.UseCases.Template.Create;
-using Parser.Application.UseCases.Template.Edit;
-using Parser.Application.UseCases.Template.Get;
-using Parser.Application.UseCases.Template.GetForDataSheet;
-using Parser.Application.UseCases.Template.GetForMenu;
+using Parser.Application.UseCases.Templates.Create;
+using Parser.Application.UseCases.Templates.Delete;
+using Parser.Application.UseCases.Templates.Edit;
+using Parser.Application.UseCases.Templates.Get;
+using Parser.Application.UseCases.Templates.GetForMenu;
 using Parser.Controllers.Common;
 
 namespace Parser.Controllers;
@@ -36,8 +36,9 @@ public class TemplateController : ApiController
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IResult> GetForMenu(CancellationToken cancellationToken) => ToResponse(await Sender.Send(new GetForMenuTemplateRequest(), cancellationToken));
     
-    [HttpGet("for-datasheet/{Id:guid}")]
-    [ProducesResponseType(typeof(Result<List<GetForDataSheetResponse>>), StatusCodes.Status200OK)]
+    [HttpDelete("{Id:guid}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IResult> GetForDataSheet([FromRoute] GetForDataSheetRequest request, CancellationToken cancellationToken) => ToResponse(await Sender.Send(request, cancellationToken));
+    public async Task<IResult> Delete([FromRoute] DeleteTemplateRequest request, CancellationToken cancellationToken) => ToResponse(await Sender.Send(request, cancellationToken));
 }

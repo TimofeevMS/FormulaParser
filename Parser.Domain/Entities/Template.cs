@@ -1,9 +1,9 @@
-﻿namespace Parser.Domain.Entities;
+﻿using Parser.Domain.Base;
 
-public class Template
+namespace Parser.Domain.Entities;
+
+public class Template : AuditableEntity
 {
-    public Guid Id { get; set; }
-    
     public string Name { get; set; }
     
     public List<TemplateAttribute> Attributes { get; set; }

@@ -1,9 +1,9 @@
-﻿namespace Parser.Domain.Entities;
+﻿using Parser.Domain.Base;
 
-public class DataSheetValue
+namespace Parser.Domain.Entities;
+
+public class DataSheetValue : AuditableEntity
 {
-    public Guid Id { get; set; }
-    
     public Guid DataSheetId { get; set; }
     
     public DataSheet DataSheet { get; set; }

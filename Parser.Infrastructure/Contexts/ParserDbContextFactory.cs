@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace Parser.Infrastructure.Contexts;
 
+/// <summary>
+/// Фабрика контекста базы данных.
+/// </summary>
 public class ParserDbContextFactory : IDesignTimeDbContextFactory<ParserDbContext>
 {
     public ParserDbContext CreateDbContext(string[] args)
