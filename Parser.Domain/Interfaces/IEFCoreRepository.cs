@@ -1,6 +1,6 @@
 ﻿namespace Parser.Domain.Interfaces;
 
-public interface IRepositoryGeneric<TEntity> : IRepository where TEntity : class
+public interface IEFCoreRepository<TEntity> : IRepository where TEntity : class
 {
     Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
     

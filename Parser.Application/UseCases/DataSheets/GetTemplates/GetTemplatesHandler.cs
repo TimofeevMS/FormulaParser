@@ -8,12 +8,12 @@ namespace Parser.Application.UseCases.DataSheets.GetTemplates;
 
 public class GetTemplatesHandler : IRequestHandler<GetTemplatesRequest, Result<GetTemplatesResponse>>
 {
-    private readonly ITemplateRepository _repository;
+    private readonly ITemplateEfCoreRepository _efCoreRepository;
     private readonly IMapper _mapper;
 
     public GetTemplatesHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        _repository = unitOfWork.GetRepository<ITemplateRepository>();
+        _efCoreRepository = unitOfWork.GetRepository<ITemplateEfCoreRepository>();
         _mapper = mapper;
     }
 
@@ -22,7 +22,7 @@ public class GetTemplatesHandler : IRequestHandler<GetTemplatesRequest, Result<G
         if (!request.Id.HasValue)
             return Errors.Template.Identifier;
         
-        var template = await _repository.GetByIdAsync(request.Id.Value, cancellationToken);
+        var template = await _efCoreRepository.GetByIdAsync(request.Id.Value, cancellationToken);
         
         if (template is null)
             return Errors.Template.NotFound;

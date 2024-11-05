@@ -10,13 +10,13 @@ namespace Parser.Application.UseCases.Templates.Edit;
 public class EditTemplateHandler : IRequestHandler<EditTemplateRequest, Result>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ITemplateRepository _repository;
+    private readonly ITemplateEfCoreRepository _efCoreRepository;
     private readonly IMapper _mapper;
 
     public EditTemplateHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
-        _repository = unitOfWork.GetRepository<ITemplateRepository>();
+        _efCoreRepository = unitOfWork.GetRepository<ITemplateEfCoreRepository>();
         _mapper = mapper;
     }
     
@@ -25,7 +25,7 @@ public class EditTemplateHandler : IRequestHandler<EditTemplateRequest, Result>
         if (!request.Id.HasValue)
             return Errors.Template.Identifier;
     
-        var template = await _repository.GetByIdAsync(request.Id.Value, cancellationToken);
+        var template = await _efCoreRepository.GetByIdAsync(request.Id.Value, cancellationToken);
     
         if (template is null)
             return Errors.Template.NotFound;
@@ -48,7 +48,7 @@ public class EditTemplateHandler : IRequestHandler<EditTemplateRequest, Result>
             }
         }
         
-        await _repository.AddOrUpdateAsync(template, cancellationToken);
+        await _efCoreRepository.AddOrUpdateAsync(template, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     
         return Result.Success();

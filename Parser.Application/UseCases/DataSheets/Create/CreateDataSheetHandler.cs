@@ -9,19 +9,19 @@ namespace Parser.Application.UseCases.DataSheets.Create;
 public class CreateDataSheetHandler : IRequestHandler<CreateDataSheetRequest, Result<Guid>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IDataSheetRepository _dataSheetRepository;
-    private readonly ITemplateRepository _templateRepository;
+    private readonly IDataSheetEfCoreRepository _dataSheetEfCoreRepository;
+    private readonly ITemplateEfCoreRepository _templateEfCoreRepository;
 
     public CreateDataSheetHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _dataSheetRepository = unitOfWork.GetRepository<IDataSheetRepository>();;
-        _templateRepository = unitOfWork.GetRepository<ITemplateRepository>();;
+        _dataSheetEfCoreRepository = unitOfWork.GetRepository<IDataSheetEfCoreRepository>();;
+        _templateEfCoreRepository = unitOfWork.GetRepository<ITemplateEfCoreRepository>();;
     }
 
     public async Task<Result<Guid>> Handle(CreateDataSheetRequest request, CancellationToken cancellationToken)
     {
-        var template = await _templateRepository.GetByIdAsync(request.TemplateId, cancellationToken);
+        var template = await _templateEfCoreRepository.GetByIdAsync(request.TemplateId, cancellationToken);
 
         if (template is null)
             return Errors.Template.NotFound;
@@ -49,7 +49,7 @@ public class CreateDataSheetHandler : IRequestHandler<CreateDataSheetRequest, Re
                             Values = values
                         };
 
-        await _dataSheetRepository.AddOrUpdateAsync(dataSheet, cancellationToken);
+        await _dataSheetEfCoreRepository.AddOrUpdateAsync(dataSheet, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return dataSheet.Id;

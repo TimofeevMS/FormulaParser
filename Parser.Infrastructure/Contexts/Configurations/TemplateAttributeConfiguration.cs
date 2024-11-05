@@ -10,7 +10,7 @@ public class TemplateAttributeConfiguration : IEntityTypeConfiguration<TemplateA
     {
         builder.HasOne(a => a.Template)
                .WithMany(t => t.Attributes)
-               .HasForeignKey(a => a.DataSheetTemplateId);
+               .HasForeignKey(a => a.TemplateId);
         
         builder.HasQueryFilter(e => !e.DeletedAt.HasValue);
     }

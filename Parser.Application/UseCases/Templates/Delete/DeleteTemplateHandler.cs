@@ -8,12 +8,12 @@ namespace Parser.Application.UseCases.Templates.Delete;
 public class DeleteTemplateHandler : IRequestHandler<DeleteTemplateRequest, Result>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ITemplateRepository _repository;
+    private readonly ITemplateEfCoreRepository _efCoreRepository;
 
     public DeleteTemplateHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _repository = unitOfWork.GetRepository<ITemplateRepository>();
+        _efCoreRepository = unitOfWork.GetRepository<ITemplateEfCoreRepository>();
     }
     
     public async Task<Result> Handle(DeleteTemplateRequest request, CancellationToken cancellationToken)
@@ -21,12 +21,12 @@ public class DeleteTemplateHandler : IRequestHandler<DeleteTemplateRequest, Resu
         if (!request.Id.HasValue)
             return Errors.Template.Identifier;
     
-        var template = await _repository.GetByIdAsync(request.Id.Value, cancellationToken);
+        var template = await _efCoreRepository.GetByIdAsync(request.Id.Value, cancellationToken);
     
         if (template is null)
             return Errors.Template.NotFound;
         
-        _repository.Delete(template);
+        _efCoreRepository.Delete(template);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     
         return Result.Success();

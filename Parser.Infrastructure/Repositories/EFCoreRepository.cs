@@ -4,11 +4,11 @@ using Parser.Domain.Interfaces;
 
 namespace Parser.Infrastructure.Repositories;
 
-public abstract class RepositoryGeneric<TEntity> : IRepositoryGeneric<TEntity> where TEntity : BaseEntity
+public abstract class EFCoreRepository<TEntity> : IEFCoreRepository<TEntity> where TEntity : BaseEntity
 {
     private readonly DbSet<TEntity> _dbSet;
 
-    protected RepositoryGeneric(DbContext context)
+    protected EFCoreRepository(DbContext context)
     {
         _dbSet = context.Set<TEntity>();
     }
@@ -38,8 +38,5 @@ public abstract class RepositoryGeneric<TEntity> : IRepositoryGeneric<TEntity> w
     
     public virtual void Update(TEntity entity) => _dbSet.Update(entity);
 
-    public virtual void Delete(TEntity entity)
-    {
-        _dbSet.Remove(entity);
-    }
+    public virtual void Delete(TEntity entity) => _dbSet.Remove(entity);
 }

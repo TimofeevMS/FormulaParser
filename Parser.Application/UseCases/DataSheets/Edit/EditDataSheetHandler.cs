@@ -10,13 +10,13 @@ namespace Parser.Application.UseCases.DataSheets.Edit;
 public class EditDataSheetHandler : IRequestHandler<EditDataSheetRequest, Result>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IDataSheetRepository _repository;
+    private readonly IDataSheetEfCoreRepository _efCoreRepository;
     private readonly IMapper _mapper;
 
     public EditDataSheetHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
-        _repository = unitOfWork.GetRepository<IDataSheetRepository>();
+        _efCoreRepository = unitOfWork.GetRepository<IDataSheetEfCoreRepository>();
         _mapper = mapper;
     }
 
@@ -25,7 +25,7 @@ public class EditDataSheetHandler : IRequestHandler<EditDataSheetRequest, Result
         if (!request.Id.HasValue)
             return Errors.DataSheet.Identifier;
         
-        var dataSheet = await _repository.GetByIdAsync(request.Id.Value, cancellationToken);
+        var dataSheet = await _efCoreRepository.GetByIdAsync(request.Id.Value, cancellationToken);
 
         if (dataSheet is null)
             return Errors.DataSheet.NotFound;
@@ -46,7 +46,7 @@ public class EditDataSheetHandler : IRequestHandler<EditDataSheetRequest, Result
             }
         }
         
-        await _repository.AddOrUpdateAsync(dataSheet, cancellationToken);
+        await _efCoreRepository.AddOrUpdateAsync(dataSheet, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();

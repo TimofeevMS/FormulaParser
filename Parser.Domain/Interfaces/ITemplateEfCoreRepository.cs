@@ -2,7 +2,7 @@
 
 namespace Parser.Domain.Interfaces;
 
-public interface ITemplateRepository : IRepositoryGeneric<Template>
+public interface ITemplateEfCoreRepository : IEFCoreRepository<Template>
 {
     Task<IEnumerable<TDto>> GetForMenuAsync<TDto>(CancellationToken cancellationToken = default);
 }

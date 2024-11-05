@@ -7,27 +7,27 @@ using Parser.Infrastructure.Contexts;
 
 namespace Parser.Infrastructure.Repositories;
 
-public class DataSheetRepository : RepositoryGeneric<DataSheet>, IDataSheetRepository
+public class TemplateEfCoreRepository : EFCoreRepository<Template>, ITemplateEfCoreRepository
 {
     private readonly IConfigurationProvider _configuration;
     private readonly ParserDbContext _context;
 
-    public DataSheetRepository(ParserDbContext context, IConfigurationProvider configuration) : base(context)
+    public TemplateEfCoreRepository(ParserDbContext context, IConfigurationProvider configuration) : base(context)
     {
         _context = context;
         _configuration = configuration;
     }
 
-    public override async Task<DataSheet?> GetByIdAsync(Guid requestId, CancellationToken cancellationToken)
+    public override async Task<Template?> GetByIdAsync(Guid templateId, CancellationToken cancellationToken)
     {
-        return await _context.DataSheets
-                             .Include(d => d.Values).ThenInclude(v => v.TemplateAttribute)
-                             .FirstOrDefaultAsync(d => d.Id == requestId, cancellationToken);
+        return await _context.Templates
+                             .Include(t => t.Attributes)
+                             .FirstOrDefaultAsync(t => t.Id == templateId, cancellationToken);
     }
 
     public async Task<IEnumerable<TDto>> GetForMenuAsync<TDto>(CancellationToken cancellationToken)
     {
-        return await _context.DataSheets
+        return await _context.Templates
                              .ProjectTo<TDto>(_configuration)
                              .ToListAsync(cancellationToken);
     }

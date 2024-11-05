@@ -12,7 +12,7 @@ public class TemplateAttribute : AuditableEntity
     
     public TemplateAttributeType Type { get; set; }
     
-    public Guid DataSheetTemplateId { get; set; }
+    public Guid TemplateId { get; set; }
     
     public Template Template { get; set; }
 }

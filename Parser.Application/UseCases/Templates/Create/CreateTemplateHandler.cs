@@ -9,13 +9,13 @@ namespace Parser.Application.UseCases.Templates.Create;
 public class CreateTemplateHandler : IRequestHandler<CreateTemplateRequest, Result<Guid>>
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ITemplateRepository _repository;
+    private readonly ITemplateEfCoreRepository _efCoreRepository;
     private readonly IMapper _mapper;
 
     public CreateTemplateHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
-        _repository = unitOfWork.GetRepository<ITemplateRepository>();
+        _efCoreRepository = unitOfWork.GetRepository<ITemplateEfCoreRepository>();
         _mapper = mapper;
     }
     
@@ -28,7 +28,7 @@ public class CreateTemplateHandler : IRequestHandler<CreateTemplateRequest, Resu
             Attributes = _mapper.Map<List<TemplateAttribute>>(request.Attributes)
         };
         
-        await _repository.AddOrUpdateAsync(template, cancellationToken);
+        await _efCoreRepository.AddOrUpdateAsync(template, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         
         return template.Id;

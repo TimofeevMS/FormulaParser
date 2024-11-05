@@ -6,6 +6,9 @@ using Parser.Domain.Entities;
 
 namespace  Parser.Application.Services.Formula;
 
+/// <summary>
+/// Сервис для вычисления формул
+/// </summary>
 public class FormulaService : IFormulaService
 {
     private readonly IEnumerable<ICustomFunctionHandler> _functionHandlers;
@@ -17,6 +20,11 @@ public class FormulaService : IFormulaService
         _variableLoaderFactory = variableLoaderFactory;
     }
 
+    /// <summary>
+    /// Вычисляет формулу
+    /// </summary>
+    /// <param name="context">Контекст вычисления</param>
+    /// <returns>Результат вычисления</returns>
     public string? Evaluate(FormulaContext context)
     {
         var expression = new Expression(context.Formula, ExpressionOptions.IgnoreCaseAtBuiltInFunctions);
@@ -33,7 +41,7 @@ public class FormulaService : IFormulaService
 
         return expression.Evaluate()?.ToString();
     }
-
+    
     private void LoadVariableIfNeeded(DataSheet dataSheet, string variable, IDictionary<string, (string FormulaOrValue, bool IsFormula)> variableDefinitions)
     {
         if (variableDefinitions.ContainsKey(variable))

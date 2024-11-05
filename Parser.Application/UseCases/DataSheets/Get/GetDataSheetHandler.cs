@@ -8,12 +8,12 @@ namespace Parser.Application.UseCases.DataSheets.Get;
 
 public class GetDataSheetHandler : IRequestHandler<GetDataSheetRequest, Result<GetDataSheetResponse>>
 {
-    private readonly IDataSheetRepository _repository;
+    private readonly IDataSheetEfCoreRepository _efCoreRepository;
     private readonly IMapper _mapper;
 
     public GetDataSheetHandler(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        _repository = unitOfWork.GetRepository<IDataSheetRepository>();
+        _efCoreRepository = unitOfWork.GetRepository<IDataSheetEfCoreRepository>();
         _mapper = mapper;
     }
 
@@ -22,7 +22,7 @@ public class GetDataSheetHandler : IRequestHandler<GetDataSheetRequest, Result<G
         if (!request.Id.HasValue)
             return Errors.DataSheet.Identifier;
         
-        var dataSheet = await _repository.GetByIdAsync(request.Id.Value, cancellationToken);
+        var dataSheet = await _efCoreRepository.GetByIdAsync(request.Id.Value, cancellationToken);
         
         if (dataSheet is null)
             return Errors.DataSheet.NotFound;

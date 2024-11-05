@@ -9,12 +9,12 @@ namespace Parser.Application.UseCases.DataSheets.Calculate;
 
 public class CalculateFormulaHandler : IRequestHandler<CalculateFormulaRequest, Result<CalculateFormulaResponse>>
 {
-    private readonly IDataSheetRepository _repository;
+    private readonly IDataSheetEfCoreRepository _repository;
     private readonly IFormulaService _formulaService;
 
     public CalculateFormulaHandler(IUnitOfWork unitOfWork, IFormulaService formulaService)
     {
-        _repository = unitOfWork.GetRepository<IDataSheetRepository>();
+        _repository = unitOfWork.GetRepository<IDataSheetEfCoreRepository>();
         _formulaService = formulaService;
     }
     
@@ -31,7 +31,7 @@ public class CalculateFormulaHandler : IRequestHandler<CalculateFormulaRequest, 
         var formulaContext = new FormulaContext
         {
             DataSheet = dataSheet,
-            Formula = dataSheet.Values.First(a => a.Id == request.ValueId).TemplateAttribute.Formula!,
+            Formula = dataSheet.Values.FirstOrDefault(a => a.Id == request.ValueId)?.TemplateAttribute.Formula ?? string.Empty,
             VariableDefinitions = new Dictionary<string, (string FormulaOrValue, bool IsFormula)>()
         };
         
