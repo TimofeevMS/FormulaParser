@@ -3,18 +3,6 @@ using Parser.Application.Common.Results;
 
 namespace Parser.Application.UseCases.DataSheets.Create;
 
-public record CreateDataSheetRequest : IRequest<Result<Guid>>
-{
-    public Guid TemplateId { get; set; }
- 
-    public string Name { get; set; }
-    
-    public IEnumerable<CreateDataSheetAttribute> Values { get; set; }
-}
+public record CreateDataSheetRequest(Guid TemplateId, string Name, IEnumerable<CreateDataSheetAttribute> Values) : IRequest<Result<Guid>>;
 
-public record CreateDataSheetAttribute
-{
-    public Guid Id { get; set; }
-    
-    public string? Value { get; set; }
-}
+public record CreateDataSheetAttribute(Guid Id, string? Value);

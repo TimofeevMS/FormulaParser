@@ -24,6 +24,12 @@ public class Result
 
     public Error[] Errors { get; }
 
+    public static Result Combine(params Result[] results)
+    {
+        var errors = results.Where(r => !r.Succeeded).SelectMany(r => r.Errors).ToArray();
+        return errors.Length > 0 ? Failure(errors) : Success();
+    }
+    
     public static Result Success() => new();
 
     public static Result Failure(Error error) => new(error);

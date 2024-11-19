@@ -1,4 +1,5 @@
 using Parser.Application;
+using Parser.Filters;
 using Parser.Infrastructure;
 using Serilog;
 
@@ -19,7 +20,10 @@ builder.Services
        .AddSwaggerGen()
        .AddInfrastructure(builder.Configuration)
        .AddApplication()
-       .AddControllers();
+       .AddControllers(options =>
+                       {
+                           options.Filters.Add<ResultFilter>(); // Добавляем глобально
+                       });
 
 Log.Logger = new LoggerConfiguration()
              .WriteTo.Console()
@@ -33,6 +37,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseReDoc();
 }
 
 app.UseHttpsRedirection();

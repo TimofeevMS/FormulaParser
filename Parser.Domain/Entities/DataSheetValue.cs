@@ -28,6 +28,7 @@ public class DataSheetValue : AuditableEntity
             TemplateAttributeType.Number => NumericValue?.ToString(),
             TemplateAttributeType.Boolean => BooleanValue?.ToString(),
             TemplateAttributeType.Formula => FormulaValue,
+            TemplateAttributeType.Unknown => StringValue,
             _ => throw new ArgumentOutOfRangeException()
         };
     }
@@ -48,8 +49,11 @@ public class DataSheetValue : AuditableEntity
             case TemplateAttributeType.Formula:
                 FormulaValue = value;
                 break;
+            case TemplateAttributeType.Unknown:
+                StringValue = value;
+                break;
             default:
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException("TemplateAttribute.Type Unknown");
         }
     }
 }

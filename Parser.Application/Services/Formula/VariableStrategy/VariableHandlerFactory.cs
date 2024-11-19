@@ -9,7 +9,7 @@ public class VariableLoaderFactory : IVariableLoaderFactory
 
     public VariableLoaderFactory(IEnumerable<IVariableLoaderStrategy> strategies)
     {
-        _strategies = strategies.ToList();
+        _strategies = strategies;
     }
 
     public IVariableLoaderStrategy GetStrategy(TemplateAttributeType type)

@@ -37,10 +37,7 @@ public class CalculateFormulaHandler : IRequestHandler<CalculateFormulaRequest, 
         
         var result = _formulaService.Evaluate(formulaContext);
 
-        var response = new CalculateFormulaResponse
-                       {
-                           Result = result
-                       };
+        var response = new CalculateFormulaResponse(result);
 
         return response;
     }

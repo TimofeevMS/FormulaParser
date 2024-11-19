@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser.Domain", "Parser.Dom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser.Application", "Parser.Application\Parser.Application.csproj", "{02352A23-50D3-461C-9447-CCB3322EC0C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parser.Application.Tests", "Parser.Application.Tests\Parser.Application.Tests.csproj", "{4EA4ED0C-071D-4E3E-835C-C80C02C90D08}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{02352A23-50D3-461C-9447-CCB3322EC0C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02352A23-50D3-461C-9447-CCB3322EC0C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02352A23-50D3-461C-9447-CCB3322EC0C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EA4ED0C-071D-4E3E-835C-C80C02C90D08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EA4ED0C-071D-4E3E-835C-C80C02C90D08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EA4ED0C-071D-4E3E-835C-C80C02C90D08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EA4ED0C-071D-4E3E-835C-C80C02C90D08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

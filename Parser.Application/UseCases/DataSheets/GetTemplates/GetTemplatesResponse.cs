@@ -3,23 +3,7 @@ using Parser.Domain.Entities;
 
 namespace Parser.Application.UseCases.DataSheets.GetTemplates;
 
-public record GetTemplatesResponse
-{
-    public Guid Id { get; init; }
-    
-    public string Name { get; init; }
-    
-    public List<GetForDataSheetValue> Values { get; init; }
-}
+public record GetTemplatesResponse(Guid Id, string Name, List<GetForDataSheetValue> Values);
 
 [AutoMap(typeof(TemplateAttribute), ReverseMap = true)]
-public record GetForDataSheetValue
-{
-    public Guid Id { get; init; }
-    
-    public string Name { get; init; }
-    
-    public string? Value { get; init; }
-    
-    public TemplateAttributeType Type { get; init; }
-}
+public record GetForDataSheetValue(Guid Id, string Name, string? Value, TemplateAttributeType Type);

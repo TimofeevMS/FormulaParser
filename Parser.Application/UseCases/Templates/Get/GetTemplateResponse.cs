@@ -4,25 +4,7 @@ using Parser.Domain.Entities;
 namespace Parser.Application.UseCases.Templates.Get;
 
 [AutoMap(typeof(Template), ReverseMap = true)]
-public record GetTemplateResponse
-{
-    public Guid Id { get; init; }
-    
-    public string Name { get; init; }
-    
-    public List<GetTemplateAttribute> Attributes { get; init; }
-}
+public record GetTemplateResponse(Guid Id, string Name, List<GetTemplateAttribute> Attributes);
 
 [AutoMap(typeof(TemplateAttribute), ReverseMap = true)]
-public record GetTemplateAttribute
-{
-    public Guid Id { get; init; }
-    
-    public string Name { get; init; }
-    
-    public string Description { get; init; }
-    
-    public string? Formula { get; init; }
-    
-    public TemplateAttributeType Type { get; init; }
-}
+public record GetTemplateAttribute(Guid Id, string Name, string Description, string? Formula, TemplateAttributeType Type);

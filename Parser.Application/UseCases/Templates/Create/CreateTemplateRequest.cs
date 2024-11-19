@@ -5,21 +5,7 @@ using Parser.Domain.Entities;
 
 namespace Parser.Application.UseCases.Templates.Create;
 
-public record CreateTemplateRequest : IRequest<Result<Guid>>
-{
-    public string Name { get; init; }
-    
-    public IEnumerable<CreateTemplateAttribute> Attributes { get; init; }
-}
+public record CreateTemplateRequest(string Name, IEnumerable<CreateTemplateAttribute> Attributes) : IRequest<Result<Guid>>;
 
 [AutoMap(typeof(TemplateAttribute), ReverseMap = true)]
-public record CreateTemplateAttribute
-{
-    public string Name { get; init; }
-    
-    public string Description { get; init; }
-    
-    public string? Formula { get; init; }
-    
-    public TemplateAttributeType Type { get; init; }
-}
+public record CreateTemplateAttribute(string Name, string Description, string? Formula, TemplateAttributeType Type);

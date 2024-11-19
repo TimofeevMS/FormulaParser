@@ -27,10 +27,7 @@ public class GetTemplatesHandler : IRequestHandler<GetTemplatesRequest, Result<G
         if (template is null)
             return Errors.Template.NotFound;
 
-        var response = new GetTemplatesResponse()
-                       {
-                           Values = _mapper.Map<List<GetForDataSheetValue>>(template.Attributes)
-                       };
+        var response = new GetTemplatesResponse(template.Id, template.Name, _mapper.Map<List<GetForDataSheetValue>>(template.Attributes));
         
         return response;
     }

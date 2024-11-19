@@ -16,17 +16,7 @@ public record EditDataSheetRequest : IRequest<Result>
 }
 
 [AutoMap(typeof(DataSheet), ReverseMap = true)]
-public record EditDataSheetBody
-{
-    public string Name { get; init; }
-    
-    public List<EditDataSheetValue> Values { get; init; }
-}
+public record EditDataSheetBody(string Name, List<EditDataSheetValue> Values);
 
 [AutoMap(typeof(DataSheetValue), ReverseMap = true)]
-public record EditDataSheetValue
-{
-    public Guid? Id { get; init; }
-    
-    public string? Value { get; init; }
-}
+public record EditDataSheetValue(Guid? Id, string? Value);
